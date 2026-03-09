@@ -54,7 +54,7 @@ current i assume animation frames start at zero, to force this check `Animation 
 
 as a rule of thumb, loading the base file and standalone meshes are in `gltfScripts`, anything to do with bones or skinning is in `gltfSkinning`
 
-to change the default test model, see `gltfSettings`
+to change the default test model, see `exampleGltfSettings`
 
 calling `gltfLoad(fname)` returns a struct of two arrays, `{skinnedMeshes[], meshes[]}` which contain the string names of. meshes and skins are stored in singleton functions and can be accessed with function like
 
