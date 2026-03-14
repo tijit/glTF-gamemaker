@@ -41,14 +41,15 @@ function gltfSkinnedMesh(skinName) constructor {
 	
 	currentAnimation = "none";
 	
-	/// animate the mesh with the given timestamp
+	/// @function animate(t)
+	/// @desc animate the mesh with the given timestamp using currentAnimation
+	/// @param {float} t in seconds
 	static animate = function(t=0) {
 		var anim = skin.animate(t, currentAnimation);
 		var n = array_length(anim);
 		var result = array_create(n);
 		for (var i = 0; i < n; i++) {
 			result[i] = array_create(16);
-			//anim[i] = anim[i] ?? data[i][1];
 			if (is_undefined(anim[i])) {
 				result[i] = data[i][1];
 			}
@@ -60,18 +61,9 @@ function gltfSkinnedMesh(skinName) constructor {
 		return update(result, poseMatrices, true);
 	};
 	
-	/// this one is more advanced. call this for each animation you want to blend together,
-	/// then call animateBlended with the result. a1,a2 are results from skin.animate()
-	static blendAnimation = function(a1, a2, amount) {
-		var n = skin.bones;
-		var result = array_create(n);
-		for (var i = 0; i < n; i++) {
-			result[i] = a1[i].blend(a2[i], amount);
-		}
-		return result;
-	};
-	
-	/// pass in result from blendAnimation()
+	/// @function animateBlended(b)
+	/// @desc animate mesh using blended animation
+	/// @param {Array gltfPoseTriple} b result from blendAnimation
 	static animateBlended = function(b) {
 		var n = skin.bones;
 		var result = array_create(n);
@@ -81,6 +73,44 @@ function gltfSkinnedMesh(skinName) constructor {
 		}
 		return update(result, poseMatrices, true);
 	};
+	
+	/// @function blendAnimation(a1, a2, amount)
+	/// @desc blend from 1 animation to another using amount. undefined animation channels will always be ignored
+	/// @param {Array gltfPoseTriple} a1 result from blendAnimation
+	/// @param {Array gltfPoseTriple} a2 result from blendAnimation
+	/// @param {float} amount blend from a1 to a2, 0 - 1
+	static blendAnimation = function(a1, a2, amount) {
+		var n = skin.bones;
+		var result = array_create(n);
+		for (var i = 0; i < n; i++) {
+			result[i] = a1[i].blend(a2[i], amount);
+		}
+		return result;
+	};
+	
+	/// @function maskAnimation(a, bonenames, inclusive)
+	/// @desc mask out specific bones on an animation and return it
+	/// @param {Array gltfPoseTriple} a result from skinned.animate
+	/// @param {Array string} bonenames array of bone names, that will be masked out
+	/// @param {bool} invert if only masked bones should remain
+	static maskAnimation = function(a,bonenames, invert = false) {
+		var masks = [];
+		for (var bn = 0; bn < array_length(bonenames); bn++) {
+			var index = getBoneIndex(bonenames[bn]);
+			array_push(masks,index);
+		} 
+		
+		var n = skin.bones;
+		var result = array_create(n);
+		for (var i = 0; i < n; i++) {
+			if (array_contains(masks,i) != invert){
+				result[i] = new gltfPoseTriple();
+			} else {
+				result[i] = a[i];
+			}
+		}
+		return result;
+	}
 	
 	/// calc transforms of each bone & return how much they move the vertices.
 	/// _fromAnimation should only be set to true when called from the animate function
@@ -486,7 +516,7 @@ function __gltfSkinData(_name, _meshName, _boneCount=MAXIMUM_BONES) constructor 
 		return self;
 	};
 	
-	/// this is called by a skinnedMesh instance and it returns a poseTriple
+	/// this is called by a skinnedMesh instance and it returns an array of poseTriple for each bone
 	static animate = function(t, animName) {
 		var n = array_length(animSamplers);
 		var result = array_create(n, undefined);
