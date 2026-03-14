@@ -38,8 +38,6 @@ function __gltfTextures__() {
 	return tex;
 }
 
-// memory leak hell babey
-// need to store indices of loaded sprites in case i need to unload everything later
 function __load_texture(fname) {
 	var spr = sprite_add(fname, 0, false, false, 0, 0);
 	var tex = sprite_get_texture(spr, 0);

@@ -540,10 +540,6 @@ function __gltfSkinData(_name, _meshName, _boneCount=MAXIMUM_BONES) constructor 
 				S.get(t);
 			
 			result[i] = new gltfPoseTriple(T, R, S);
-			
-			// TODO: return T,R,S values instead of a matrix
-			// so i can blend animations easily
-			//result[i] = matrix_build_quaternion(T[0], T[1], T[2], R, S[0], S[1], S[2]);
 		}
 		return result;
 	};

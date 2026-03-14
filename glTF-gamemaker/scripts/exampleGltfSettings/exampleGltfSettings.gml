@@ -12,7 +12,6 @@ function exampleGltfSettings() {
 		defaultShader : shGltfPSX,
 		//defaultShader : shGltfSkinnedMesh,
 		
-		
 		testFile : "mikuleek.gltf",
 		//testFile : "testfile5.gltf",
 		//testFile : "cube.gltf",

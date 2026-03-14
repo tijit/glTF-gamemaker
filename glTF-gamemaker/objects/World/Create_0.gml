@@ -31,6 +31,7 @@ pxScale = floor(clamp(pxScale, minScale, maxScale));
 
 window_set_size(sw*pxScale, sh*pxScale);
 surface_resize(application_surface, sw, sh);
+alarm[0] = 11;
 
 #endregion
 

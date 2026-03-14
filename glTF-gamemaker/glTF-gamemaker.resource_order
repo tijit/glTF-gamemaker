@@ -7,7 +7,6 @@
     {"name":"Rooms","order":2,"path":"folders/Rooms.yy",},
     {"name":"Scripts","order":3,"path":"folders/Scripts.yy",},
     {"name":"Shaders","order":4,"path":"folders/Shaders.yy",},
-    {"name":"Sprites","order":5,"path":"folders/Sprites.yy",},
   ],
   "ResourceOrderSettings":[
     {"name":"Arrows","order":5,"path":"objects/Arrows/Arrows.yy",},

@@ -231,38 +231,9 @@ function __gltfMulMatVec(m, v) {
 
 /// multiply two matrices together, in the correct order
 function __gltfMulMats(m1, m2) {
+	// this function was needed for my own sanity
 	gml_pragma("forceinline");
-	/*
 	return matrix_multiply(m2, m1);
-	
-	__gltfDebugPrint(string(result));
-	*/
-	var result = [
-		m1[0]*m2[0] + m1[4]*m2[1] + m1[8]*m2[2] + m1[12]*m2[3],
-		m1[1]*m2[0] + m1[5]*m2[1] + m1[9]*m2[2] + m1[13]*m2[3],
-		m1[2]*m2[0] + m1[6]*m2[1] + m1[10]*m2[2] + m1[14]*m2[3],
-		m1[3]*m2[0] + m1[7]*m2[1] + m1[11]*m2[2] + m1[15]*m2[3],
-		
-		m1[0]*m2[4] + m1[4]*m2[5] + m1[8]*m2[6] + m1[12]*m2[7],
-		m1[1]*m2[4] + m1[5]*m2[5] + m1[9]*m2[6] + m1[13]*m2[7],
-		m1[2]*m2[4] + m1[6]*m2[5] + m1[10]*m2[6] + m1[14]*m2[7],
-		m1[3]*m2[4] + m1[7]*m2[5] + m1[11]*m2[6] + m1[15]*m2[7],
-		
-		m1[0]*m2[8] + m1[4]*m2[9] + m1[8]*m2[10] + m1[12]*m2[11],
-		m1[1]*m2[8] + m1[5]*m2[9] + m1[9]*m2[10] + m1[13]*m2[11],
-		m1[2]*m2[8] + m1[6]*m2[9] + m1[10]*m2[10] + m1[14]*m2[11],
-		m1[3]*m2[8] + m1[7]*m2[9] + m1[11]*m2[10] + m1[15]*m2[11],
-		
-		m1[0]*m2[12] + m1[4]*m2[13] + m1[8]*m2[14] + m1[12]*m2[15],
-		m1[1]*m2[12] + m1[5]*m2[13] + m1[9]*m2[14] + m1[13]*m2[15],
-		m1[2]*m2[12] + m1[6]*m2[13] + m1[10]*m2[14] + m1[14]*m2[15],
-		m1[3]*m2[12] + m1[7]*m2[13] + m1[11]*m2[14] + m1[15]*m2[15],
-	];
-	
-	//__gltfDebugPrint(string(matBuildFromVectors(columns)));
-	//__gltfDebugPrint(string(result));
-	
-	return result;
 }
 
 /// scalar product of s and v, returns new vector
@@ -470,17 +441,4 @@ function __gltfLerpArray(a, b, amount) {
 		i++;
 	}
 	return result;
-}
-
-/// for animation
-function __gltfCubicSplineInterpolate(ak, vk, bk, t) {
-	/*
-	vt = (2t^3-3t^2+1)*vk + td(t^3-2t^2+t)*bk+(-2t^3+3t^2)*v<k+1>+td(t^3-t^2)*a<k+1>
-	*/
-	// t squared and cubed
-	var t2 = t*t;
-	var t3 = t2*t;
-	
-	var vt = new __gltfVec4();
-	
 }

@@ -46,33 +46,35 @@ under "include" i just click visible objects that way u can uncheck unnecessary 
 u can uncheck shape keys but it really doesnt matter
 under animation, uncheck "sampling animations" i think it just bloats the file and i have no support for it
 
+current i assume animation frames start at zero, to force this check `Animation > Rest & Ranges > Set all glTF animation starting at 0`
+
 ---
 
 **in gamemaker:**
 
 as a rule of thumb, loading the base file and standalone meshes are in `gltfScripts`, anything to do with bones or skinning is in `gltfSkinning`
 
-to change the default test model, see `gltfSettings`
+to change the default test model, see `exampleGltfSettings`
 
 calling `gltfLoad(fname)` returns a struct of two arrays, `{skinnedMeshes[], meshes[]}` which contain the string names of. meshes and skins are stored in singleton functions and can be accessed with function like
 
-`getMesh("MeshName", primitiveIndex) : vertex buffer`
+`gltfGetMesh("MeshName", primitiveIndex) : vertex buffer`
 
-`getMeshPrimitives("MeshName") : vertex buffer array`
+`gltfGetMeshPrimitives("MeshName") : vertex buffer array`
 
-`getSkin(name) : skin struct`
+`gltfGetSkin(name) : skin struct`
 
 you can load more than one file but make sure they all have unique names for meshes and armatures to avoid overwriting a previous one
 
 **MESHES**
 
-meshes that are not skinned (not bound to a skeleton) are not instances and can simply be drawn using `drawMesh("meshName")`
+meshes that are not skinned (not bound to a skeleton) are not instances and can simply be drawn using `gltfDrawMesh("meshName")`
 
-meshes can contain multiple default textures, one for each material in blender. you can override them in an array (the second argument) eg `drawMesh("meshName", [ sprite_get_texture(sprCube, 0), ... , etc])`
+meshes can contain multiple default textures, one for each material in blender. you can override them in an array (the second argument) eg `gltfDrawMesh("meshName", [ sprite_get_texture(sprCube, 0), ... , etc])`
 
 i wrote a shortcut for drawing a mesh with a set of transforms:
 
-`drawTransformed(px, py, pz, rot, scale, drawCode)`
+`gltfDrawTransformed(px, py, pz, rot, scale, drawCode)`
 
 this project was originally intended for a 2d side view to line up with gamemakers default room view
 
@@ -83,12 +85,12 @@ and `pz` is equivalent to `depth`
 `drawCode` is a function. example use:
 
 ```
-drawTransformed(x, y, z, 0, 10, function() {
+gltfDrawTransformed(x, y, z, 0, 10, function() {
 	drawMesh("Cube");
 `});
 ```
 
-`drawTransformed3D()` has rotation in all 3 axes
+`gltfDrawTransformed3D()` has rotation in all 3 axes
 
 **SKINS**
 
@@ -96,7 +98,7 @@ the default shader allows up to 24 bones, duplicate or change an existing shader
 
 `skinnedMeshes` are instances of structs, created using
 
-`mySkin = new SkinnedMesh("ArmatureName");`
+`mySkin = new gltfSkinnedMesh("ArmatureName");`
 
 call either `.update()` or `.animate()` on this instance at least once before it can be drawn
 
@@ -153,3 +155,14 @@ if two animations work on completely different bones, they will treat the weight
 
 `shSkinnedMeshLit`
 	shader that incorporates gamemakers built in lighting uniforms
+
+use new `result_matrix` parameter of `matrix_multiply` to boost performance where possible
+
+import mesh vertex colour
+
+(requested feature) bone masking for animation blending
+
+(requested feature) helper functions to automate animation blend trees
+
+(requested feature) setting to handle animations in frames instead of seconds
+
