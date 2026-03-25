@@ -12,13 +12,43 @@ if (n >= 1 && n <= 9) {
 	}
 }
 
-var mx = -180 + 360 * mouse_x / room_width;
-var my = -180 + 360 * mouse_y / room_height;
+#region use T,R,S keyboard keys to change the position, rotation, scale of skinnedMesh
 
-//testSkin.position.x = lerp(0, 256, mx / 180);
-//testSkin.rotation.y = lerp(0, 90, my / 180);
+var holdT = keyboard_check(ord("T"));
+var holdR = keyboard_check(ord("R"));
+var holdS = keyboard_check(ord("S"));
 
-//testSkin.rotation.x += 0.2;
+captureMouse = holdT || holdR || holdS;
+
+if (!captureMouse) {
+	window_set_cursor(cr_default);
+	dmx = display_mouse_get_x();
+	dmy = display_mouse_get_y();
+}
+else {
+	window_set_cursor(cr_none);
+	var dx = display_mouse_get_x() - dmx;
+	var dy = display_mouse_get_y() - dmy;
+	display_mouse_set(dmx, dmy);
+	
+	var factor = 1/10;
+	if (holdT) {
+		testSkin.position.x += dx * factor;
+		testSkin.position.y += dy * factor;
+	}
+	else if (holdR) {
+		factor *= 1/5;
+		testSkin.rotation.y -= dx * factor;
+		testSkin.rotation.x += dy * factor;
+	}
+	else if (holdS) {
+		var _scale = testSkin.scale.x;
+		_scale *= power(1.1, dx * factor / 32);
+		testSkin.setScale(_scale);
+	}
+}
+
+#endregion
 
 t += 1/60;
 testSkin.animate(t);

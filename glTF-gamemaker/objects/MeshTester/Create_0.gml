@@ -65,6 +65,10 @@ gltfSetIdentity();
 		
 */
 
+dmx = display_mouse_get_x();
+dmy = display_mouse_get_y();
+captureMouse = false;
+
 var center = gltfMeshMidpoint(testMesh);
 center.scale(scale);
 

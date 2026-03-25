@@ -41,7 +41,7 @@ function gltfLoad(fname) {
 			channels[]
 				sampler : SAMPLER ID
 				target{}
-					node : IND
+					node : IND (bone index)
 					path : TYPE (eg "rotation", "translation")
 			name : ARMATURE_NAME
 			samplers[]
@@ -81,6 +81,9 @@ function gltfLoad(fname) {
 				
 				boneAnimationData[nodeID] = boneAnimationData[nodeID] ?? { };
 				boneAnimationData[nodeID][$ name] = boneAnimationData[nodeID][$ name] ?? { };
+				// [nodeID]			[name]				[type]
+				// ->
+				// [bone index]		[animation name]	[channel/type (T R or S)]
 				boneAnimationData[nodeID][$ name][$ type] = bAnim;
 			}
 		}
@@ -342,7 +345,7 @@ function __gltfAccessBuffer(accessorID, dat, buffers) {
 	
 	var ret = [ ];
 	
-	var t = typeIDs[$ "_"+string(comp)];
+	var t = typeIDs[$ $"_{comp}"];
 	var dim = typeComponentCount[$ type];
 	// if (dim == 1) - array of scalars instead of array of arrays?
 	if (dim == 1) {

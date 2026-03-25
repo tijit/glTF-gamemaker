@@ -33,7 +33,11 @@ void main()
 	
 	gl_Position = pos;
 	
-    vNormal = in_Normal;
+	vec4 N = (skinMatrix * vec4(in_Normal, 0.));
+	N = gm_Matrices[MATRIX_WORLD] * N;
+	
+	vNormal = normalize(N.xyz);
+	
     vColour = in_Colour;
     vTexcoord = in_TextureCoord;
 }
