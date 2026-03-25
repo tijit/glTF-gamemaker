@@ -1,5 +1,5 @@
 World.exampleText = "animation tester";
-World.debugTextDefault = "1-9 change animation";
+World.debugTextDefault = "1-9 change animation\nuse T,R,S keys + mouse to transform mesh";
 
 var loaded = gltfLoad(exampleGltfSettings().testFile);
 
