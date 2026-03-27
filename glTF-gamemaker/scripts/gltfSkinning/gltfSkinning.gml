@@ -246,13 +246,19 @@ function gltfSkinnedMesh(skinName) constructor {
 	};
 	
 	/// local = animation * restpose
-	static getBoneLocalTransformMatrix = function(boneIndex) {
-		return localTransform[boneIndex];
+	static getBoneLocalTransformMatrix = function(bone) {
+		if(is_string(bone)){
+			return localTransform[getBoneIndex(bone)];
+		}
+		return localTransform[bone];
 	};
 	
 	/// model = model(parent) * local
-	static getBoneModelTransformMatrix = function(boneIndex) {
-		return modelTransform[boneIndex];
+	static getBoneModelTransformMatrix = function(bone) {
+		if(is_string(bone)){
+			return modelTransform[getBoneIndex(bone)];
+		}
+		return modelTransform[bone];
 	};
 	
 	/// this gets the position of a bone in world space
